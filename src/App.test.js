@@ -1,11 +1,18 @@
-import { render, screen } from '@testing-library/react';
+import { getByText, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 
-test('renders learn react link', () => {
-  const { asFragment } = render(<App />);
-  // const linkElement = screen.getByText(/learn react/i);
-  // expect(linkElement).toBeInTheDocument();
-
-  expect(asFragment(<App />)).toMatchSnapshot();
-});
+describe('App', () => {
+  it('Renders App component', () => {
+    render(<App />);
+    expect(screen.getByPlaceholderText(/Search/i)).toBeInTheDocument();
+    Object.values(screen.findAllByText(/search/i)).map(val => val.toBeInTheDocument());
+    expect(screen.getByLabelText(/search/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
+    expect(screen.getByAltText(/for search/i)).toBeInTheDocument();
+    const input = screen.getByRole('searchbox');
+    userEvent.type(input, 'test text');
+    Object.values(screen.findAllByText(/test text/i)).map(val => val.toBeInTheDocument());
+    expect(screen.getByDisplayValue(/test text/i)).toBeInTheDocument();
+  })
+})
