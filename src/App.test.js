@@ -3,16 +3,23 @@ import userEvent from '@testing-library/user-event';
 import App from './App';
 
 describe('App', () => {
+  it('Renders async user name', async () => {
+    render(<App />);
+    expect(screen.queryByText(/Logged in as/i)).toBeNull();
+    expect(await screen.findByText(/Logged in as/i)).toBeInTheDocument();
+    await screen.findAllByText(/search/i);
+    expect(screen.getByAltText(/for search/i)).toHaveClass('image');
+    expect(screen.getByAltText(/for search/i)).toHaveStyle('width: 300px');
+    expect(screen.getByRole('searchbox')).toBeRequired();
+    expect(screen.getByRole('searchbox')).toBeEmptyDOMElement();
+    expect(screen.getByRole('searchbox')).toHaveAttribute('id');
+    expect(screen.getByLabelText(/search/i)).toBeInTheDocument();
+    expect(screen.getByAltText(/for search/i)).not.toHaveAttribute('id');
+
+  })
   it('Renders App component', () => {
     render(<App />);
-    expect(screen.getByPlaceholderText(/Search/i)).toBeInTheDocument();
-    Object.values(screen.findAllByText(/search/i)).map(val => val.toBeInTheDocument());
-    expect(screen.getByLabelText(/search/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
-    expect(screen.getByAltText(/for search/i)).toBeInTheDocument();
-    const input = screen.getByRole('searchbox');
-    userEvent.type(input, 'test text');
-    Object.values(screen.findAllByText(/test text/i)).map(val => val.toBeInTheDocument());
-    expect(screen.getByDisplayValue(/test text/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Search for: React/i)).toBeNull();
+    expect(screen.getByText(/Search for:/i)).toBeInTheDocument();
   })
 })
