@@ -1,23 +1,30 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 
+
+const Search = ({ value, onChange, children }) => {
+  return (
+    <form>
+      <label>{children}</label>
+      <input placeholder='search' type='search' name='search' value={value} onChange={onChange} />
+    </form>
+  )
+}
 function App() {
+  const [search, setSearch] = useState('');
+  const onChange = ({ target }) => {
+    setSearch(target.value);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Search value={search} onChange={onChange}>
+        Search
+        <br/>
+      </Search>
+      <div>
+        Search for: {search ? search : '...'}
+      </div>
     </div>
   );
 }
